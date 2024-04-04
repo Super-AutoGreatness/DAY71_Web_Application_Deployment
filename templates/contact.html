@@ -1,0 +1,72 @@
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header  class="masthead" style="background-image: url('../static/assets/img/contact-bg.jpg'); height: 50vh;">
+  <div class="container position-relative px-3 px-lg-4">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="page-heading">          
+          {% if success %}
+            <h2>Your Message Has Been Sent</h2>
+          {% else: %}
+            <h2>CONTACT ME</h2>
+          {% endif %}
+          <span class="subheading">Do you have questions? I've got the answers you need.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content-->
+<main class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <p> Reach out to me using the form below, and I'll get back to you promptly.</p>
+        <div class="my-5">
+          <!-- * * * * * * * * * * * * * * *-->
+          <!-- * * Simplified SB Contact Form for the Tutorial* *-->
+          <form id="contactForm" action="{{ url_for('contact') }}" method="POST" novalidate>
+            <div class="form-floating">
+                <input class="form-control" id="name" name="name" type="text" placeholder="Enter your name..." required data-validation-required-message="Please enter your name." />
+                <label for="name">Name</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email..." required data-validation-required-message="Please enter your email address." />
+                <label for="email">Email address</label>
+                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="phone" name="phone" type="tel" placeholder="Enter your phone number..." required data-validation-required-message="Please enter your phone number." />
+                <label for="phone">Phone Number</label>
+                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" id="message" name="message" placeholder="Enter your message here..." style="height: 12rem" required data-validation-required-message="Please enter a message."></textarea>
+                <label for="message">Message</label>
+                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+            </div>
+            <br />
+            
+            <!-- This part doest do anything. It's from the original bootstrap template.
+            <div id="submitSuccessMessage" {% if success is defined and success %} style="display:block;" {% else %} style="display:none;" {% endif %}>
+                <div class="text-center mb-3">
+                    <div class="fw-bolder">Successfully sent message!</div>                                        
+                </div>
+            </div>
+            -->
+
+            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+            <!-- Submit Button-->
+            <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}

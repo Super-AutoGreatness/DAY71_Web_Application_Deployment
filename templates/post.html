@@ -1,0 +1,82 @@
+{% include "header.html" %}
+{% from "bootstrap5/form.html" import render_form %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{post.img_url}}'); height: 50vh;">
+  <div class="container position-relative px-3 px-lg-4">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="post-heading">
+          <h2>{{ post.title }}</h2>
+          <h3 class="subheading">{{ post.subtitle }}</h3>
+          <span class="meta" >Posted by
+            <a href="#">{{ post.author.name }}</a>
+            on {{ post.date }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Post Content -->
+<article>
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        {{ post.body|safe }}
+
+        <!--TASK: Only show Edit Post button if user id is 1 (admin user). It's DONE. -->
+        {% if current_user.id == 1: %}
+        <div class="d-flex justify-content-end mb-4">
+          <!-- TASK: Editing posts-->
+          <a class="btn btn-primary float-right" href="{{ url_for('edit_post', post_id=post.id) }}" >EDIT POST</a>
+        </div>
+        {% endif %}
+
+        <!-- Comments Area -->
+        <!-- TASK: Add a CKEditor for commenting below. It's DONE. -->
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='comment_text') }}
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        <div style="margin-top: 40px;"></div>
+
+        <div class="comment" >                    
+          <ul class="commentList">
+            <!-- TASK: Show all the written comments on a particular post. It's DONE. -->
+            {% for comment in post.comments: %}
+            <li>
+              <div class="comment" style="display: flex; align-items: start;">
+                <div class="commenterImage" style="margin-right: 30px;">
+                  <img src="{{ gravatar_url(comment.comment_author.email) }}" style="border-radius: 50%;" />
+                </div>
+                <div>
+                  <div class="commentText" >
+                    <p>{{ comment.text|safe }}</p>  <!-- In Jinja2 templating, the `` |safe `` filter is used to mark a string as safe for rendering raw HTML content. -->
+                    <span class="date sub-text" >{{ comment.comment_author.name }}</span>  <!-- The jinja2 expression here is a classic case of ORM: object relational mapping -->
+                  </div>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+          
+      </div>
+    </div>
+  </div>
+</article>
+
+{% include "footer.html" %}
+
+
+
+<!-- 
+USING ``|safe`` in Jinja2: 
+    In Jinja2 templating, the `` |safe `` filter is used to mark a string as safe for rendering raw HTML content.
+    By default, Jinja2 automatically escapes any string values rendered in the template to prevent potential security vulnerabilities like Cross-Site Scripting (XSS) attacks. 
+    
+    When you use `` comment.text|safe ``, as done above, you're telling Jinja2 that the ``comment.text`` value is safe for rendering as raw HTML and should not be escaped. 
+    This allows any HTML tags or special characters present in the string to be rendered as intended, instead of being displayed as plain text.
+-->

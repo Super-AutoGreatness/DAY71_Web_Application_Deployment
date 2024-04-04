@@ -1,0 +1,67 @@
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header
+  class="masthead" style="background-image: url('../static/assets/img/home-bg.jpg'); height: 50vh;" >
+  <div class="container position-relative px-3 px-lg-4">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h2>Auto-Greatness's Blog</h2>
+          <span class="subheading"> This is Auto-Greatness learning how Flask and Jinja works with Bootstrap </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+
+      <!-- Post preview-->
+      {% for post in all_posts %}
+        <div class="post-preview">
+          <a href="{{ url_for('show_post', post_id=post.id) }}">
+            <h2 class="post-title">{{ post.title }}</h2>          
+          </a>
+            <h5 class="post-subtitle">{{ post.subtitle }}</h5>
+
+          <!-- TASK: Using the X symbol, Add code to delete posts below. It's DONE. -->
+          <p class="post-meta">
+            Posted by
+            <a href="#">{{post.author.name}}</a>
+            on {{post.date}} 
+
+          <!-- TASK: Only show delete button if user id is 1 (admin user). It's DONE. -->
+            {% if current_user.id == 1: %}
+              <a href="{{ url_for('delete_blogpost', post_id=post.id)}}" style="margin-left: 15px;"> Delete BlogPost ✘</a>
+            {% endif %}
+          </p>
+
+        </div>
+
+        <!-- Divider-->
+        <hr class="my-4" />
+      {% endfor %}
+
+      <!-- New Post -->
+      <!-- TASK: Only show Create Post button if user id is 1 (admin user). It's DONE. -->
+      {% if current_user.id == 1: %}
+        <div class="d-flex justify-content-end mb-4">
+        <!-- TASK: Adding new posts, It's DONE. -->
+          <a class="btn btn-primary float-right" href="{{ url_for('add_new_post') }}">CREATE NEW POST</a>
+        </div>
+      {% endif %}
+
+      <!-- Pager-->
+      <div class="d-flex justify-content-end mb-4">
+        <a class="btn btn-secondary text-uppercase" href="#!">OLDER POSTS →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
